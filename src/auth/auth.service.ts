@@ -8,6 +8,11 @@ import { JwtService } from '@nestjs/jwt';
 import { MailService } from 'src/mail/mail.service';
 import { User } from 'src/users/users.model';
 
+interface JwtPayload {
+  email: string;
+  sub: number;
+}
+
 @Injectable()
 export class AuthService {
   
@@ -64,6 +69,21 @@ export class AuthService {
     
     user.isConfirmRegister = true;
     user.save();
+
+    return this.login({
+      email: user.email,
+      password: user.password
+    })
+  }
+
+  async getUserByAuthToken(token: string) {
+    const decoded = this.jwtService.decode(token) as JwtPayload;
+
+    const user = await this.usersService.getUserById(decoded.sub);
+
+    if (!user) {
+      throw new UnauthorizedException();
+    }
 
     return this.login({
       email: user.email,
