@@ -1,12 +1,9 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
-
-interface UserCreationAttrs {
-  email: string;
-  password: string;
-}
+import { Form } from 'src/forms/forms.model';
+import { RegisterUserDto } from 'src/users/dto/register-user.dto';
+import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 
 @Table({tableName: 'users'})
-export class User extends Model<User, UserCreationAttrs> {
+export class User extends Model<User, RegisterUserDto> {
   @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
   id: number;
 
@@ -15,4 +12,13 @@ export class User extends Model<User, UserCreationAttrs> {
 
   @Column({type: DataType.STRING, allowNull: false})
   password: string;
+
+  @Column({type: DataType.STRING, allowNull: false})
+  confirmToken: string;
+
+  @Column({type: DataType.BOOLEAN, defaultValue: false, allowNull: false})
+  isConfirmRegister: boolean;
+
+  @HasMany(() => Form)
+  forms: Form[]
 }

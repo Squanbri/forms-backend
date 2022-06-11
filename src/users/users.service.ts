@@ -1,4 +1,4 @@
-import { CreateUserDto } from './dto/create-user.dto';
+import { RegisterUserDto } from 'src/users/dto/register-user.dto';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './users.model';
@@ -8,7 +8,7 @@ export class UsersService {
 
   constructor(@InjectModel(User) private userRepository: typeof User) {}
 
-  async createUser(dto: CreateUserDto) {
+  async registerUser(dto: RegisterUserDto) {
     const user = await this.userRepository.create(dto);
     return user;
   }
@@ -18,8 +18,12 @@ export class UsersService {
     return users;
   }
 
-  async getUserByEmail(email: string) {
-    const user = await this.userRepository.findOne({where: {email}});
-    return user;
+  async getUserByEmail(email: string = 'qwe'): Promise<User> {
+    try {
+      const user = await this.userRepository.findOne({where: {email}});
+      return user;
+    } catch (e) {
+      console.log(e)
+    }
   }
 }
