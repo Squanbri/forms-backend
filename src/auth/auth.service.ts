@@ -8,7 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { MailService } from 'src/mail/mail.service';
 import { User } from 'src/users/users.model';
 
-interface JwtPayload {
+export interface JwtPayload {
   email: string;
   sub: number;
 }

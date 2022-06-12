@@ -3,5 +3,5 @@ export class CreateFormDto {
 
   readonly content: object;
 
-  readonly userId: number;
+  userId: number;
 }

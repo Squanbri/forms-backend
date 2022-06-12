@@ -4,7 +4,12 @@ import { CreateFormDto } from './dto/create-form.dto';
 
 @Table({tableName: 'forms'})
 export class Form extends Model<Form, CreateFormDto> {
-  @Column({ type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true })
+  @Column({ 
+    type: DataType.UUID, 
+    defaultValue: DataType.UUIDV4, 
+    unique: true, 
+    primaryKey: true
+  })
   id: string;
 
   @Column({ type: DataType.JSONB, allowNull: false })
